@@ -5,14 +5,16 @@ class Elevator {
     this.MAXFLOOR = 10;
     this.requests = [];
     this.direction = 'up';
+    this.waitingList = [];
+    this.passengers = [];
   }
 
   start() {
-    setInterval(() => this.update(), 1000);
+    let intervalId = setInterval(() => this.update(), 1000);
   }
 
   stop() {
-    clearInterval(() => this.start());
+    clearInterval(intervalId);
   }
 
   update() {
@@ -28,25 +30,24 @@ class Elevator {
   }
 
   floorUp() {
-    if (this.floor < this.MAXFLOOR) {
-      this.floor++;
-      this.direction = 'up';
-    }
+    if (this.floor < this.MAXFLOOR) this.floor++;
+    this.log();
   }
 
   floorDown() {
-    if (this.floor > 0) {
-      this.floor--;
-      this.direction = 'down';
-    }
+    if (this.floor > 0) this.floor--;
+    this.log();
   }
 
-
-  call() {}
+  call(person) {
+    this.waitingList.push(person);
+    this.requests.push(person.originFloor);
+  }
 
   log() {
     console.log(`Direction: ${this.direction} | Floor: ${this.floor}`);
   }
+
 }
 
 module.exports = Elevator;
